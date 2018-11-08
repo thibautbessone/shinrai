@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>shinrai</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<ul class="pages">
+    <li class="chat page">
+        <div class="chatArea">
+            <ul class="messages"></ul>
+        </div>
+        <input class="inputMessage" placeholder="your message here"/>
+    </li>
+    <li class="login page">
+        <div class="form">
+            <h3 class="title">welcome to <span class="shinraiTitle">shinrai</span></h3>
+            <h3 class="title">what's your nickname ?</h3>
+            <input class="usernameInput" type="text" maxlength="15" />
+            <!-- http://huebee.buzz/ for color picker
+            https://tovic.github.io/color-picker/
+            https://bgrins.github.io/spectrum/-->
+        </div>
+    </li>
+</ul>
+
+<script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+<script src="/socket.io/socket.io.js"></script>
+<script src="/main.js"></script>
+</body>
+</html>
