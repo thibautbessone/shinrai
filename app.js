@@ -1,5 +1,6 @@
 // Set up Express server
 let express = require('express');
+let favicon = require('serve-favicon');
 let app = express();
 let path = require('path');
 let server = require('http').createServer(app);
@@ -13,6 +14,7 @@ server.listen(port, () => {
 });
 
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(favicon(path.join(__dirname, 'public', 'favicon.png')));
 
 
 // events including something to broadcast
