@@ -7,7 +7,7 @@
 }
 
 html {
-  background-color: #141516;
+  background-color: #101012;
   color: lightgray;
   font-weight: 300;
   -webkit-font-smoothing: antialiased;
@@ -51,7 +51,7 @@ ul {
 /* Login Page */
 
 .login.page {
-  background-color: #141516;
+  background-color: #101012;
 }
 
 .login.page .form {
@@ -161,7 +161,7 @@ ul {
   width: 15px;
 }
 ::-webkit-scrollbar-track {
-  background: #141516;
+  background: #101012;
 }
 ::-webkit-scrollbar-thumb {
   background: #202122;
