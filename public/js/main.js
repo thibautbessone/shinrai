@@ -12,11 +12,39 @@ $(function() {
     let $messages = $('.messages'); // Messages area
     let $inputMessage = $('.inputMessage'); // Input message input box
 
+    // Color picker
+    let colorInput = $('.color-input');
+    let elem = colorInput[0];
+    let hueb = new Huebee( elem, {
+        "className": "dark-picker",
+        "saturations": 2,
+        "hues": 6,
+        "notation": "hex",
+        "hue0": 150
+    });
+
+    let basebg;
+    let basetext;
+    colorInput.mouseover(function() {
+        basebg = colorInput.css('background-color');
+        basetext = colorInput.css('color');
+        colorInput.css('background-color', '#24292e');
+        if (hueb.isLight) {
+            colorInput.css('color', '#b2ada5');
+        }
+    });
+
+    colorInput.mouseout(function() {
+        colorInput.css('background-color', basebg);
+        colorInput.css('color', basetext);
+    });
+
     let $loginPage = $('.login.page'); // The login page
     let $chatPage = $('.chat.page'); // The chatroom page
 
     // Prompt for setting a username
     let username;
+    let userColor;
     let connected = false;
     let typing = false;
     let lastTypingTime;
@@ -196,7 +224,7 @@ $(function() {
     $window.keydown(event => {
         // Auto-focus the current input when a key is typed
         if (!(event.ctrlKey || event.metaKey || event.altKey)) {
-            $currentInput.focus();
+            //$currentInput.focus();
         }
         // When the client hits ENTER on their keyboard
         if (event.which === 13) {
@@ -215,11 +243,6 @@ $(function() {
     });
 
     // Click events
-
-    // Focus input when clicking anywhere on login page
-    $loginPage.click(() => {
-        $currentInput.focus();
-    });
 
     // Focus input when clicking on the message input's border
     $inputMessage.click(() => {

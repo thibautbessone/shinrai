@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>shinrai</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://unpkg.com/huebee@1/dist/huebee.min.css">
 </head>
 <body>
 <ul class="pages">
@@ -18,7 +19,9 @@
         <div class="form">
             <h3 class="title">welcome to <span class="shinraiTitle">shinrai</span></h3>
             <h3 class="title">what's your nickname ?</h3>
-            <input class="usernameInput" type="text" maxlength="15" />
+            <input class="usernameInput" type="text" maxlength="15" spellcheck="false"/><br><br>
+            <h3 class="title">pick your color</h3>
+            <input class="color-input" value="random" />
             <!-- http://huebee.buzz/ for color picker
             https://tovic.github.io/color-picker/
             https://bgrins.github.io/spectrum/-->
@@ -28,6 +31,7 @@
 
 <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
 <script src="/socket.io/socket.io.js"></script>
-<script src="/main.js"></script>
+<script src="/js/main.js"></script>
+<script src="https://unpkg.com/huebee@1/dist/huebee.pkgd.min.js"></script>
 </body>
 </html>
