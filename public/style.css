@@ -184,3 +184,10 @@ ul {
 .dark-picker .huebee__container {
   background: #24292e;
 }
+.huebee__close-button {
+  background: #46bbcc;
+}
+
+.huebee__close-button__x {
+  stroke-width: 1;
+}

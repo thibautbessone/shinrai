@@ -209,7 +209,10 @@ $(function() {
 
     // Gets the color of a username through our hash function
     const getUsernameColor = (username) => {
-        // Compute hash code
+
+        let $chosenColor = $('.color-input').val();
+        if($chosenColor != 'random') return $chosenColor;
+        // No color specified -> choose a random one
         let hash = 7;
         for (let i = 0; i < username.length; i++) {
             hash = username.charCodeAt(i) + (hash << 5) - hash;
