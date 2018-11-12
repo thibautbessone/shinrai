@@ -1,8 +1,10 @@
 # shinrai 信頼
-Online, anonymous chat service. No account needed.
+**Online, anonymous chat service. No account needed.**
 
 I created this to play around with socket.io, not really a project in itself.
-Try it out [here](http://217.182.71.71:4242/) (no SSL certificate)
+Try it out [here](http://217.182.71.71:4242/) (no SSL certificate).
+
+The code isn't organized - as I said, I'm only trying things and ideas without worrying too much about readability.
 
 # How to install
 

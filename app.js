@@ -6,6 +6,8 @@ let path = require('path');
 let server = require('http').createServer(app);
 let sio = require('socket.io')(server);
 let port = 4242;
+let fs = require('fs');
+let hasher = require('md5');
 
 let usersCount = 0;
 
@@ -69,5 +71,18 @@ sio.on('connection', (socket) => {
                 numUsers: usersCount
             });
         }
+    });
+
+    socket.on('nameCheck', (name) => {
+        if (!fs.existsSync('./users/' + name + '.json')) {
+            socket.emit('nameUnclaimed', name);
+        } else {
+            socket.emit('nameClaimed', name);
+        }
+    });
+
+    socket.on('pwCheck', (name, password) => {
+        let pw = JSON.parse(fs.readFileSync('./users/' + name + '.json')).pw;
+        socket.emit('checkResult', pw === hasher(password));
     });
 });

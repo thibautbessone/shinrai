@@ -191,3 +191,41 @@ ul {
 .huebee__close-button__x {
   stroke-width: 1;
 }
+
+.claimBtn {
+  display: none;
+  position: inherit;
+  cursor: pointer;
+  background-color: transparent;
+  color: #b2ada5;
+}
+
+.claimBtn:hover {
+  color: #46bbcc;
+  transition: 0.2s;
+}
+
+.modal {
+  text-align: center;
+  background-color: #101012;
+  color: #b2ada5;
+}
+
+.modal a {
+  color: #46bbcc;
+}
+
+.pwInput {
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid #46bbcc;
+  color: #b2ada5;
+}
+
+.pwInput:focus {
+  outline: none;
+}
+
+.error {
+  color: #ee3f3f;
+}

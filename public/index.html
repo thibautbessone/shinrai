@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>shinrai</title>
     <link rel="stylesheet" href="https://unpkg.com/huebee@1/dist/huebee.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.css" />
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -19,7 +20,8 @@
         <div class="form">
             <h3 class="title">welcome to <span class="shinraiTitle">shinrai</span></h3>
             <h3 class="title">what's your nickname ?</h3>
-            <input class="usernameInput" type="text" maxlength="15" spellcheck="false"/><br><br>
+            <input class="usernameInput" type="text" maxlength="15" spellcheck="false"/>
+            <a class="claimBtn" type="button">Claim</a><br><br>
             <h3 class="title">pick your color</h3>
             <input class="color-input" value="random" />
             <!-- http://huebee.buzz/ for color picker
@@ -29,9 +31,20 @@
     </li>
 </ul>
 
+<div id="pwModal" class="modal">
+    <p>this nickname is reserved - prove it is yours</p><br>
+    <label>password :
+        <input class="pwInput" type="password" maxlength="15" spellcheck="false" autofocus/>
+    </label><br>
+    <p class="error"></p>
+    <a onclick="window.location.reload()" href="#" rel="modal:close">not mine</a>
+</div>
+
 <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
 <script src="/socket.io/socket.io.js"></script>
 <script src="/js/main.js"></script>
 <script src="https://unpkg.com/huebee@1/dist/huebee.pkgd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
+
 </body>
 </html>

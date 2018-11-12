@@ -11,6 +11,8 @@ $(function() {
     let $usernameInput = $('.usernameInput'); // Input for username
     let $messages = $('.messages'); // Messages area
     let $inputMessage = $('.inputMessage'); // Input message input box
+    let $claimButton = $('.claimBtn');
+    let $pwInput = $('.pwInput');
 
     // Color picker
     let colorInput = $('.color-input');
@@ -25,6 +27,40 @@ $(function() {
 
     let basebg;
     let basetext;
+
+    let $loginPage = $('.login.page'); // The login page
+    let $chatPage = $('.chat.page'); // The chatroom page
+
+    // Prompt for setting a username
+    let username;
+    let connected = false;
+    let typing = false;
+    let lastTypingTime;
+    let $currentInput = $usernameInput.focus();
+
+    let socket = io();
+
+
+
+    $usernameInput.on('input',function () {
+        if($usernameInput.val().trim() !== "") {
+            $claimButton.fadeIn();
+        } else {
+            $claimButton.fadeOut();
+        }
+    });
+
+    $claimButton.click(function () {
+        let claimedNick = cleanInput($usernameInput.val().trim());
+    });
+
+    $pwInput.keypress(function (e) {
+        if(e.which == 13) {
+            socket.emit('pwCheck', username, cleanInput($pwInput.val().trim()));
+
+        }
+    });
+
     colorInput.mouseover(function() {
         basebg = colorInput.css('background-color');
         basetext = colorInput.css('color');
@@ -39,19 +75,6 @@ $(function() {
         colorInput.css('color', basetext);
     });
 
-    let $loginPage = $('.login.page'); // The login page
-    let $chatPage = $('.chat.page'); // The chatroom page
-
-    // Prompt for setting a username
-    let username;
-    let userColor;
-    let connected = false;
-    let typing = false;
-    let lastTypingTime;
-    let $currentInput = $usernameInput.focus();
-
-    let socket = io();
-
     const addParticipantsMessage = (data) => {
         let message = '';
         if (data.numUsers === 1) {
@@ -63,19 +86,14 @@ $(function() {
     };
 
     // Sets the client's username
-    const setUsername = () => {
-        username = cleanInput($usernameInput.val().trim());
+    const setUsername = (username) => {
+        $loginPage.fadeOut();
+        $chatPage.show();
+        $loginPage.off('click');
+        $currentInput = $inputMessage.focus();
 
-        // If the username is valid
-        if (username) {
-            $loginPage.fadeOut();
-            $chatPage.show();
-            $loginPage.off('click');
-            $currentInput = $inputMessage.focus();
-
-            // Tell the server your username
-            socket.emit('newUser', username);
-        }
+        // Tell the server your username
+        socket.emit('newUser', username);
     };
 
     // Sends a chat message
@@ -180,6 +198,10 @@ $(function() {
         return $('<div/>').text(input).html();
     };
 
+    const inputPw = () => {
+
+    };
+
     // Updates the typing event
     const updateTyping = () => {
         if (connected) {
@@ -236,7 +258,8 @@ $(function() {
                 socket.emit('stopTyping');
                 typing = false;
             } else {
-                setUsername();
+                username = cleanInput($usernameInput.val().trim());
+                socket.emit('nameCheck', username);
             }
         }
     });
@@ -306,5 +329,29 @@ $(function() {
 
     socket.on('reconnect_error', () => {
         log('attempt to reconnect has failed');
+    });
+
+    socket.on('nameUnclaimed', (username) => {
+        setUsername(username);
+    });
+
+    // Modal
+    socket.on('nameClaimed', (username) => {
+        $loginPage.fadeOut();
+        $("#pwModal").modal({
+            escapeClose: false,
+            clickClose: false,
+            fadeDuration: 100,
+            fadeDelay: 0.50
+        });
+    });
+
+    socket.on('checkResult', (result) => {
+        if(result) {
+            $.modal.close();
+            setUsername(username);
+        } else {
+            $('.error').html('wrong password');
+        }
     });
 });
