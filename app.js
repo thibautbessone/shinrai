@@ -73,16 +73,23 @@ sio.on('connection', (socket) => {
         }
     });
 
-    socket.on('nameCheck', (name) => {
+    socket.on('nameCheck', (name, claiming) => {
         if (!fs.existsSync('./users/' + name + '.json')) {
-            socket.emit('nameUnclaimed', name);
+            socket.emit('nameUnclaimed', name, claiming);
         } else {
-            socket.emit('nameClaimed', name);
+            socket.emit('nameClaimed', name, claiming);
         }
     });
 
     socket.on('pwCheck', (name, password) => {
         let pw = JSON.parse(fs.readFileSync('./users/' + name + '.json')).pw;
         socket.emit('checkResult', pw === hasher(password));
+    });
+
+    socket.on('newClaim', (username, password) => {
+        let obj = {
+            "pw": hasher(password)
+        };
+        fs.writeFile('./users/' + username +'.json', JSON.stringify(obj));
     });
 });

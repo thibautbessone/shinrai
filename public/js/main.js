@@ -12,7 +12,11 @@ $(function() {
     let $messages = $('.messages'); // Messages area
     let $inputMessage = $('.inputMessage'); // Input message input box
     let $claimButton = $('.claimBtn');
-    let $pwInput = $('.pwInput');
+    let claiming = false;
+    let $pwInput = $('#passwordInput');
+    let $pw1 = $('#newPw1');
+    let $pw2 = $('#newPw2');
+    let $claimLink = $('#claimLink');
 
     // Color picker
     let colorInput = $('.color-input');
@@ -31,6 +35,7 @@ $(function() {
     let $loginPage = $('.login.page'); // The login page
     let $chatPage = $('.chat.page'); // The chatroom page
 
+
     // Prompt for setting a username
     let username;
     let connected = false;
@@ -39,8 +44,6 @@ $(function() {
     let $currentInput = $usernameInput.focus();
 
     let socket = io();
-
-
 
     $usernameInput.on('input',function () {
         if($usernameInput.val().trim() !== "") {
@@ -52,12 +55,27 @@ $(function() {
 
     $claimButton.click(function () {
         let claimedNick = cleanInput($usernameInput.val().trim());
+        claiming = true;
+        socket.emit('nameCheck', claimedNick, claiming);
     });
 
     $pwInput.keypress(function (e) {
         if(e.which == 13) {
             socket.emit('pwCheck', username, cleanInput($pwInput.val().trim()));
+        }
+    });
 
+    $claimLink.click(function () {
+        let pw1 = $('#newPw1').val();
+        let pw2 = $('#newPw2').val();
+
+        if(pw1 !== pw2) {
+            $('.claimError').html('wrong password');
+        } else {
+            username = cleanInput($usernameInput.val().trim());
+            socket.emit('newClaim', username, pw1);
+            $.modal.close();
+            setUsername(username);
         }
     });
 
@@ -248,9 +266,6 @@ $(function() {
 
     $window.keydown(event => {
         // Auto-focus the current input when a key is typed
-        if (!(event.ctrlKey || event.metaKey || event.altKey)) {
-            //$currentInput.focus();
-        }
         // When the client hits ENTER on their keyboard
         if (event.which === 13) {
             if (username) {
@@ -258,8 +273,10 @@ $(function() {
                 socket.emit('stopTyping');
                 typing = false;
             } else {
-                username = cleanInput($usernameInput.val().trim());
-                socket.emit('nameCheck', username);
+                if(!claiming) {
+                    username = cleanInput($usernameInput.val().trim());
+                    socket.emit('nameCheck', username);
+                }
             }
         }
     });
@@ -331,19 +348,42 @@ $(function() {
         log('attempt to reconnect has failed');
     });
 
-    socket.on('nameUnclaimed', (username) => {
-        setUsername(username);
+    socket.on('nameUnclaimed', (username, claiming) => {
+        if(claiming) {
+            $loginPage.fadeOut();
+            $("#claimModal").modal({
+                escapeClose: false,
+                clickClose: false,
+                showClose: false,
+                fadeDuration: 100,
+                fadeDelay: 0.50
+            });
+        } else {
+            setUsername(username);
+        }
     });
 
     // Modal
-    socket.on('nameClaimed', (username) => {
-        $loginPage.fadeOut();
-        $("#pwModal").modal({
-            escapeClose: false,
-            clickClose: false,
-            fadeDuration: 100,
-            fadeDelay: 0.50
-        });
+    socket.on('nameClaimed', (username, claiming) => {
+        if(!claiming) { // someone is claiming a new nickname
+            $loginPage.fadeOut();
+            $("#pwModal").modal({
+                escapeClose: false,
+                clickClose: false,
+                showClose: false,
+                fadeDuration: 100,
+                fadeDelay: 0.50
+            });
+        } else {
+            $loginPage.fadeOut();
+            $("#alreadyClaimedModal").modal({
+                escapeClose: false,
+                clickClose: false,
+                showClose: false,
+                fadeDuration: 100,
+                fadeDelay: 0.50
+            });
+        }
     });
 
     socket.on('checkResult', (result) => {
@@ -352,6 +392,7 @@ $(function() {
             setUsername(username);
         } else {
             $('.error').html('wrong password');
+            $pwInput.val('');
         }
     });
 });

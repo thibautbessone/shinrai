@@ -23,7 +23,7 @@
             <input class="usernameInput" type="text" maxlength="15" spellcheck="false"/>
             <a class="claimBtn" type="button">Claim</a><br><br>
             <h3 class="title">pick your color</h3>
-            <input class="color-input" value="random" />
+            <input class="color-input" value="random"/>
             <!-- http://huebee.buzz/ for color picker
             https://tovic.github.io/color-picker/
             https://bgrins.github.io/spectrum/-->
@@ -34,10 +34,25 @@
 <div id="pwModal" class="modal">
     <p>this nickname is reserved - prove it is yours</p><br>
     <label>password :
-        <input class="pwInput" type="password" maxlength="15" spellcheck="false" autofocus/>
+        <input id="passwordInput" class="pwInput" type="password" maxlength="15" spellcheck="false" autofocus/>
     </label><br>
     <p class="error"></p>
     <a onclick="window.location.reload()" href="#" rel="modal:close">not mine</a>
+</div>
+
+<div id="claimModal" class="modal">
+    <p>claiming nickname</p><br>
+    <input id="newPw1" class="pwInput" type="password" maxlength="15" spellcheck="false" placeholder="new password" autofocus/>
+    <br>
+    <input id="newPw2" class="pwInput" type="password" maxlength="15" spellcheck="false" placeholder="new password" autofocus/>
+    <br>
+    <p class="claimError"></p>
+    <a id="claimLink" href="#">claim nickname</a>
+</div>
+
+<div id="alreadyClaimedModal" class="modal">
+    <p>nickname already claimed</p><br>
+    <a onclick="window.location.reload()" href="#" rel="modal:close">use another one</a>
 </div>
 
 <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>

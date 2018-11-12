@@ -220,12 +220,13 @@ ul {
   border: none;
   border-bottom: 1px solid #46bbcc;
   color: #b2ada5;
+  text-align: center;
 }
 
 .pwInput:focus {
   outline: none;
 }
 
-.error {
+.error, .claimError {
   color: #ee3f3f;
 }
