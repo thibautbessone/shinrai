@@ -90,6 +90,8 @@ sio.on('connection', (socket) => {
         let obj = {
             "pw": hasher(password)
         };
-        fs.writeFile('./users/' + username +'.json', JSON.stringify(obj));
+        fs.writeFile('./users/' + username +'.json', JSON.stringify(obj), function (err) {
+            console.log(err);
+        });
     });
 });
