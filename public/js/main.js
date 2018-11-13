@@ -105,13 +105,15 @@ $(function() {
 
     // Sets the client's username
     const setUsername = (username) => {
-        $loginPage.fadeOut();
-        $chatPage.show();
-        $loginPage.off('click');
-        $currentInput = $inputMessage.focus();
+        if(username) {
+            $loginPage.fadeOut();
+            $chatPage.show();
+            $loginPage.off('click');
+            $currentInput = $inputMessage.focus();
 
-        // Tell the server your username
-        socket.emit('newUser', username);
+            // Tell the server your username
+            socket.emit('newUser', username);
+        }
     };
 
     // Sends a chat message
