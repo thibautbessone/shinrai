@@ -17,6 +17,7 @@ $(function() {
     let $pw1 = $('#newPw1');
     let $pw2 = $('#newPw2');
     let $claimLink = $('#claimLink');
+    let $chosenColor;
 
     // Color picker
     let colorInput = $('.color-input');
@@ -110,9 +111,10 @@ $(function() {
             $chatPage.show();
             $loginPage.off('click');
             $currentInput = $inputMessage.focus();
+            $chosenColor = $('.color-input').val();
 
             // Tell the server your username
-            socket.emit('newUser', username);
+            socket.emit('newUser', username, $chosenColor);
         }
     };
 
@@ -126,7 +128,8 @@ $(function() {
             $inputMessage.val('');
             addChatMessage({
                 username: username,
-                message: message
+                message: message,
+                color: $chosenColor
             });
             // tell server to execute 'newMsg' and send along one parameter
             socket.emit('newMsg', message);
@@ -153,9 +156,16 @@ $(function() {
         let h =  now.getHours(), m = now.getMinutes();
         let $messageDate = (h > 12) ? (h-12 + ':' + m +'pm ') : (h + ':' + m +'am ');
 
+
+        if(data.color === 'random') {
+            data.color = getUsernameColor(data.username);
+        }
+
         let $usernameDiv = $('<span class="username"/>')
             .text(data.username)
-            .css('color', getUsernameColor(data.username));
+            .css('color', data.color);
+
+
         let $messageBodyDiv = $('<span class="messageBody">')
             .text(data.message);
 
@@ -251,9 +261,6 @@ $(function() {
 
     // Gets the color of a username through our hash function
     const getUsernameColor = (username) => {
-
-        let $chosenColor = $('.color-input').val();
-        if($chosenColor != 'random') return $chosenColor;
         // No color specified -> choose a random one
         let hash = 7;
         for (let i = 0; i < username.length; i++) {

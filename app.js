@@ -10,6 +10,7 @@ let fs = require('fs');
 let hasher = require('md5');
 
 let usersCount = 0;
+let user_colors = [];
 
 server.listen(port, () => {
     console.log('Server listening at port ' + port);
@@ -23,19 +24,37 @@ app.use(favicon(path.join(__dirname, 'public', 'favicon.png')));
 sio.on('connection', (socket) => {
     let newcomer = false;
     socket.on('newMsg', (data) => {
+        console.log(JSON.stringify(user_colors));
         // we tell the client to execute 'newMsg'
+
+        let definedColor = 'random';
+        user_colors.forEach(function (elem) {
+            if(elem.user === socket.username) {
+                definedColor = elem.color;
+            }
+        });
+
         socket.broadcast.emit('newMsg', {
             username: socket.username,
-            message: data
+            message: data,
+            color: definedColor
         });
     });
 
     // new user
-    socket.on('newUser', (username) => {
+    socket.on('newUser', (username, color) => {
         if (newcomer) return;
 
         socket.username = username;
         ++usersCount;
+        console.log("COLOR : " + color);
+        if(color !== 'random') {
+            user_colors.push({
+                "user": username,
+                "color": color
+            });
+        }
+
         newcomer = true;
 
         socket.emit('login', {
