@@ -46,7 +46,6 @@ sio.on('connection', (socket) => {
 
         socket.username = username;
         ++usersCount;
-        console.log("COLOR : " + color);
         if(color !== 'random') {
             user_colors.push({
                 "user": username,
