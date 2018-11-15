@@ -24,7 +24,6 @@ app.use(favicon(path.join(__dirname, 'public', 'favicon.png')));
 sio.on('connection', (socket) => {
     let newcomer = false;
     socket.on('newMsg', (data) => {
-        console.log(JSON.stringify(user_colors));
         // we tell the client to execute 'newMsg'
 
         let definedColor = 'random';
