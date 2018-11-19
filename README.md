@@ -2,7 +2,7 @@
 **Online, anonymous chat service. No account needed.**
 
 I created this to play around with socket.io, not really a project in itself.
-Try it out [here](https://shinrai.tk/) (no SSL certificate).
+Try it out [here](https://shinrai.tk/)
 
 The code isn't organized - as I said, I'm only trying things and ideas without worrying too much about readability.
 
