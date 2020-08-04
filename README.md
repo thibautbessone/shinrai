@@ -2,7 +2,7 @@
 **Online, anonymous chat service. No account needed.**
 
 I created this to play around with socket.io, not really a project in itself.
-Try it out [here](217.182.71.71:4242)
+Try it out [here](http://217.182.71.71:4242)
 
 The code isn't organized - as I said, I'm only trying things and ideas without worrying too much about readability.
 
